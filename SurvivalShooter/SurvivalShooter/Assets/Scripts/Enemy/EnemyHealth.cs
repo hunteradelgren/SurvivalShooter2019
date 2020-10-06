@@ -50,7 +50,7 @@ public class EnemyHealth : MonoBehaviour
 
         enemyAudio.Play ();
 
-        StartCoroutine("damageFlash");
+        damageFlash();
 
         currentHealth -= amount;
             
@@ -86,18 +86,14 @@ public class EnemyHealth : MonoBehaviour
         Destroy (gameObject, 2f);
     }
 
-    IEnumerator damageFlash()
+    public void damageFlash()
     {
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
         enemy.material = flashMaterial;
-        Debug.Log("Go to flash");
-        yield return new WaitForSeconds(flashSpeed);
-        ResetColor();
-        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+        Timer myTimer1 = new Timer(0.1f, ResetColor);
+        TimeManager.instance.timers.Add(myTimer1);
     }
     public void ResetColor()
     {
-        Debug.Log("Go to original");
         enemy.material = originalMaterial;
     }
 }

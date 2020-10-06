@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class PlayerHealth : MonoBehaviour
 {
 
+    public CameraFollow cam;
+
     public int startingHealth = 100;
     public int currentHealth;
     public Slider healthSlider;
@@ -57,6 +59,8 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.value = currentHealth;
 
         playerAudio.Play ();
+
+        cam.shake = true;
 
         if(currentHealth <= 0 && !isDead)
         {
