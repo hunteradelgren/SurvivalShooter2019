@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -8,13 +9,18 @@ public class EnemyHealth : MonoBehaviour
     public int scoreValue = 10;
     public AudioClip deathClip;
 
-
     Animator anim;
     AudioSource enemyAudio;
     ParticleSystem hitParticles;
     CapsuleCollider capsuleCollider;
     bool isDead;
     bool isSinking;
+
+    public float flashSpeed = 1f;
+    public Material originalMaterial;
+    public Material flashMaterial;
+    public Renderer enemy;
+
 
 
     void Awake ()
@@ -43,6 +49,8 @@ public class EnemyHealth : MonoBehaviour
             return;
 
         enemyAudio.Play ();
+
+        StartCoroutine("damageFlash");
 
         currentHealth -= amount;
             
@@ -76,5 +84,20 @@ public class EnemyHealth : MonoBehaviour
         isSinking = true;
         ScoreManager.score += scoreValue;
         Destroy (gameObject, 2f);
+    }
+
+    IEnumerator damageFlash()
+    {
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        enemy.material = flashMaterial;
+        Debug.Log("Go to flash");
+        yield return new WaitForSeconds(flashSpeed);
+        ResetColor();
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+    }
+    public void ResetColor()
+    {
+        Debug.Log("Go to original");
+        enemy.material = originalMaterial;
     }
 }
