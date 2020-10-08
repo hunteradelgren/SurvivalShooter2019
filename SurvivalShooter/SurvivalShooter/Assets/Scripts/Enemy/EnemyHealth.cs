@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Timers;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -72,6 +73,12 @@ public class EnemyHealth : MonoBehaviour
 
         anim.SetTrigger ("Dead");
 
+        Debug.Log("Slow");
+        Time.timeScale = .01f;
+        Timer timer = new Timer(.0025f, NormalTime);
+        TimeManager.instance.timers.Add(timer);
+        
+
         enemyAudio.clip = deathClip;
         enemyAudio.Play ();
     }
@@ -95,5 +102,11 @@ public class EnemyHealth : MonoBehaviour
     public void ResetColor()
     {
         enemy.material = originalMaterial;
+    }
+
+    void NormalTime()
+    {
+        Debug.Log("reset");
+        Time.timeScale = 1;
     }
 }

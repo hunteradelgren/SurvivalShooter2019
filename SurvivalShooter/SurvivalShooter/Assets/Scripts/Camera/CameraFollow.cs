@@ -1,14 +1,19 @@
 ﻿using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+	public PlayerHealth playerHealth;
 	public Transform target;
 	public float smoothing = 5f;
 	public bool shake = false;
 	private Vector3 offset;
+	float maxZoom = 10;
+	float zoomCounter = 0;
 
 	void Start()
 	{
@@ -17,6 +22,15 @@ public class CameraFollow : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (playerHealth.currentHealth <= 0)
+        {
+			if (zoomCounter < maxZoom)
+			{
+				Camera.main.fieldOfView -= .05f;
+				zoomCounter += .05f;
+				zoomCounter += .05f;
+			}
+		}
 		if (!shake)
 		{
 			Vector3 targetCamPos = target.position + offset;

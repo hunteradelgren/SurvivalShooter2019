@@ -25,11 +25,13 @@ public class PlayerHealth : MonoBehaviour
     bool isDead;
     bool damaged;
 
+    [SerializeField]
+    AudioSource heartAudio;
 
     void Awake ()
     {
         anim = GetComponent <Animator> ();
-        playerAudio = GetComponent <AudioSource> ();
+        playerAudio = GetComponent<AudioSource>();
         playerMovement = GetComponent <PlayerMovement> ();
         playerShooting = GetComponentInChildren <PlayerShooting> ();
         currentHealth = startingHealth;
@@ -62,6 +64,11 @@ public class PlayerHealth : MonoBehaviour
 
         cam.shake = true;
 
+        if(currentHealth <= (startingHealth/4))
+        {
+            heartAudio.Play();
+        }
+
         if(currentHealth <= 0 && !isDead)
         {
             Death ();
@@ -71,10 +78,13 @@ public class PlayerHealth : MonoBehaviour
 
     void Death ()
     {
+        Timer timer1 = new Timer(5f,SpeedTime);
+        TimeManager.instance.timers.Add(timer1);
+        Time.timeScale = .25f;
         isDead = true;
 
         playerShooting.DisableEffects ();
-
+        heartAudio.Stop();
         anim.SetTrigger ("Die");
 
         playerAudio.clip = deathClip;
@@ -82,6 +92,11 @@ public class PlayerHealth : MonoBehaviour
 
         playerMovement.enabled = false;
         playerShooting.enabled = false;
+    }
+
+    void SpeedTime()
+    {
+        Time.timeScale = 1;
     }
 
 

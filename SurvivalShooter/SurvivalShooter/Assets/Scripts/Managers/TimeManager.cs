@@ -48,11 +48,11 @@ public class Timer
     public void Update() 
     {
         elapsed += Time.deltaTime;
-
+        Debug.Log(elapsed + onTimer.ToString());
         if(elapsed >= duration && !finished)
         {
             finished = true;
-
+            Debug.Log("Finished: " + onTimer.ToString());
             if(onTimer != null)
                 onTimer();
         }

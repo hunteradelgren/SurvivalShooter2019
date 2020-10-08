@@ -6,6 +6,8 @@ public class PlayerShooting : MonoBehaviour
     public float timeBetweenBullets = 0.15f;
     public float range = 100f;
 
+    [SerializeField]
+    ParticleSystem HitParticles;
 
     float timer;
     Ray shootRay = new Ray();
@@ -76,6 +78,9 @@ public class PlayerShooting : MonoBehaviour
                 enemyHealth.TakeDamage (damagePerShot, shootHit.point);
             }
             gunLine.SetPosition (1, shootHit.point);
+            Instantiate(HitParticles, shootHit.point, Quaternion.identity).Play();
+            
+
         }
         else
         {

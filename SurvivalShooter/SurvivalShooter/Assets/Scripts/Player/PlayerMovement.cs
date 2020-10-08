@@ -1,14 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
 	public float speed = 6f;
+
+	[SerializeField]
+	ParticleSystem HitParticles;
 
 	private Vector3 movement;
 	private Animator anim;
 	private Rigidbody playerRigidbody;
 	private int floorMask;
 	private float camRayLength = 100f;
+	private float count = 0;
 
 	void Awake()
 	{
@@ -52,6 +57,17 @@ public class PlayerMovement : MonoBehaviour
 	void Animating(float h, float v)
 	{
 		bool walking = h != 0f || v != 0f;
+        if (walking)
+        {
+			if(count == 0)
+            {
+				Vector3 feet = new Vector3(transform.position.x, 0, transform.position.z);
+				Instantiate(HitParticles, feet, Quaternion.identity).Play();
+			}
+			count++;
+			if (count == 20)
+				count = 0;
+		}
 
 		anim.SetBool("IsWalking", walking);
 	}
