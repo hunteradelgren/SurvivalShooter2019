@@ -1,74 +1,66 @@
-﻿using System.Threading;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-	public float speed = 6f;
+    public float speed = 6f;
 
-	[SerializeField]
-	ParticleSystem HitParticles;
+    [SerializeField]
+    ParticleSystem HitParticles;
 
-	private Vector3 movement;
-	private Animator anim;
-	private Rigidbody playerRigidbody;
-	private int floorMask;
-	private float camRayLength = 100f;
-	private float count = 0;
+    public int playerindex = 1;
 
-	void Awake()
-	{
-		floorMask = LayerMask.GetMask("Floor");
-		anim = GetComponent<Animator>();
-		playerRigidbody = GetComponent<Rigidbody>();
-	}
+    private Vector3 movement;
+    private Animator anim;
+    private Rigidbody playerRigidbody;
+    private float count = 0;
 
-	void FixedUpdate()
-	{
-		float h = Input.GetAxisRaw("Horizontal");
-		float v = Input.GetAxisRaw("Vertical");
+    void Awake()
+    {
+        anim = GetComponent<Animator>();
+        playerRigidbody = GetComponent<Rigidbody>();
+    }
 
-		Move(h, v);
-		Turning();
-		Animating(h, v);
-	}
+    void FixedUpdate()
+    {
+        float h = Input.GetAxisRaw("Horizontal" + playerindex);
+        float v = Input.GetAxisRaw("Vertical" + playerindex);
+        float r = Input.GetAxisRaw("Rotate" + playerindex);
 
-	void Move(float h, float v)
-	{
-		movement.Set(h, 0f, v);
-		movement = movement.normalized * speed * Time.deltaTime;
+        Move(h, v);
+        Turning(r);
+        Animating(h, v);
+    }
 
-		playerRigidbody.MovePosition(transform.position + movement);
-	}
+    void Move(float h, float v)
+    {
+        movement.Set(h, 0f, v);
+        movement = movement.normalized * speed * Time.deltaTime;
 
-	void Turning()
-	{
-		Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit floorHit;
+        playerRigidbody.MovePosition(transform.position + movement);
+    }
 
-		if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask)) {
-			Vector3 playerToMouse = floorHit.point - transform.position;
-			playerToMouse.y = 0f;
+    void Turning(float r)
+    {
 
-			Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
-			playerRigidbody.MoveRotation(newRotation);
-		}
-	}
+        transform.Rotate(0, 5f * r, 0);
 
-	void Animating(float h, float v)
-	{
-		bool walking = h != 0f || v != 0f;
+    }
+
+    void Animating(float h, float v)
+    {
+        bool walking = h != 0f || v != 0f;
         if (walking)
         {
-			if(count == 0)
+            if (count == 0)
             {
-				Vector3 feet = new Vector3(transform.position.x, 0, transform.position.z);
-				Instantiate(HitParticles, feet, Quaternion.identity).Play();
-			}
-			count++;
-			if (count == 20)
-				count = 0;
-		}
+                Vector3 feet = new Vector3(transform.position.x, 0, transform.position.z);
+                Instantiate(HitParticles, feet, Quaternion.identity).Play();
+            }
+            count++;
+            if (count == 20)
+                count = 0;
+        }
 
-		anim.SetBool("IsWalking", walking);
-	}
+        anim.SetBool("IsWalking", walking);
+    }
 }

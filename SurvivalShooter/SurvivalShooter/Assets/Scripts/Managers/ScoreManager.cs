@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -10,14 +9,14 @@ public class ScoreManager : MonoBehaviour
     Text text;
 
 
-    void Awake ()
+    void Awake()
     {
-        text = GetComponent <Text> ();
+        text = GetComponent<Text>();
         score = 0;
     }
 
 
-    void Update ()
+    void Update()
     {
         text.text = "Score: " + score;
     }

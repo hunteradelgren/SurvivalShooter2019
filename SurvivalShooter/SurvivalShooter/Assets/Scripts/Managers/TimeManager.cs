@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
@@ -22,17 +21,17 @@ public class TimeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach(Timer t in timers)
+        foreach (Timer t in timers)
         {
-            if(!t.finished)
-            t.Update();
+            if (!t.finished)
+                t.Update();
         }
     }
 }
 
 public delegate void TimerFunction();
 
-public class Timer 
+public class Timer
 {
     public float duration = 1f;
     float elapsed = 0f;
@@ -45,15 +44,15 @@ public class Timer
         onTimer = t;
     }
 
-    public void Update() 
+    public void Update()
     {
         elapsed += Time.deltaTime;
         Debug.Log(elapsed + onTimer.ToString());
-        if(elapsed >= duration && !finished)
+        if (elapsed >= duration && !finished)
         {
             finished = true;
             Debug.Log("Finished: " + onTimer.ToString());
-            if(onTimer != null)
+            if (onTimer != null)
                 onTimer();
         }
     }
