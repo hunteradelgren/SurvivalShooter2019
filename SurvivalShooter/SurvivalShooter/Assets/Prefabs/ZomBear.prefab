@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 82684988033110934}
   m_Layer: 9
   m_Name: ZomBear
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,6 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f6618a0da65fa45b24d5105d5d8422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  notFollowing: {fileID: 0}
+  playerHealth: {fileID: 0}
+  notFollowingHealth: {fileID: 0}
 --- !u!114 &114405961790049756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +156,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenAttacks: 0.5
   attackDamage: 15
+  player: {fileID: 0}
+  player2: {fileID: 0}
+  player2Health: {fileID: 0}
+  player2InRange: 0
 --- !u!114 &114858573952562612
 MonoBehaviour:
   m_ObjectHideFlags: 0

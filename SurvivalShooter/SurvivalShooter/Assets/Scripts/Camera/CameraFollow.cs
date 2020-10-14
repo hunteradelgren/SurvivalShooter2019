@@ -21,7 +21,7 @@ public class CameraFollow : MonoBehaviour
         {
             if (zoomCounter < maxZoom)
             {
-                Camera.main.fieldOfView -= .05f;
+                Camera.current.fieldOfView -= .05f;
                 zoomCounter += .05f;
                 zoomCounter += .05f;
             }

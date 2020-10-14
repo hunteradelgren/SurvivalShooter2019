@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO.IsolatedStorage;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -92,6 +93,20 @@ public class PlayerHealth : MonoBehaviour
 
         playerMovement.enabled = false;
         playerShooting.enabled = false;
+
+        if (Player2Health != null)
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            foreach (GameObject enemy in enemies)
+            {
+                enemy.GetComponent<EnemyMovement>().player = Player2Health.GetComponentInParent<Transform>();
+                enemy.GetComponent<EnemyMovement>().notFollowing = Player2Health.GetComponentInParent<Transform>();
+                enemy.GetComponent<EnemyMovement>().notFollowingHealth = Player2Health;
+            }
+        }
+
+        
     }
 
     void SpeedTime()

@@ -73,7 +73,7 @@ public class EnemyHealth : MonoBehaviour
 
         Debug.Log("Slow");
         Time.timeScale = .01f;
-        Timer timer = new Timer(.02f, NormalTime);
+        Timer timer = new Timer(.015f, NormalTime);
         TimeManager.instance.timers.Add(timer);
 
 

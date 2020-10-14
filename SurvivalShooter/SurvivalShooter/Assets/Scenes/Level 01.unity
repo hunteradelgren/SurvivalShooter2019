@@ -2129,6 +2129,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -19.92
       objectReference: {fileID: 0}
+    - target: {fileID: 3842129036316482776, guid: 8e1a1b7bc8914a241bcf288953449091,
+        type: 3}
+      propertyPath: m_Name
+      value: Player1Camera
+      objectReference: {fileID: 0}
     - target: {fileID: 3842129036348235285, guid: 8e1a1b7bc8914a241bcf288953449091,
         type: 3}
       propertyPath: m_LocalPosition.x
