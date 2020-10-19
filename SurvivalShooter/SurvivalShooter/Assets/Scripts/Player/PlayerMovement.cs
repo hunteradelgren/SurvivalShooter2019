@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
 	public float speed = 6f;
-
+	public Camera spawnCamera;
 	private Vector3 movement;
 	private Animator anim;
 	private Rigidbody playerRigidbody;
@@ -14,11 +15,23 @@ public class PlayerMovement : MonoBehaviour
 	{
 		floorMask = LayerMask.GetMask("Floor");
 		anim = GetComponent<Animator>();
-		playerRigidbody = GetComponent<Rigidbody>();
+		playerRigidbody = GetComponent<Rigidbody>();		
 	}
 
-	void FixedUpdate()
+    private void Start()
+    {
+		if (isLocalPlayer)
+		{
+			Camera newPlayerCamera = Instantiate<Camera>(spawnCamera);
+			newPlayerCamera.GetComponent<CameraFollow>().target = transform;
+		}
+	}
+
+    void FixedUpdate()
 	{
+		if (!isLocalPlayer)
+			return;
+
 		float h = Input.GetAxisRaw("Horizontal");
 		float v = Input.GetAxisRaw("Vertical");
 
@@ -37,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
 	void Turning()
 	{
-		Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray camRay = Camera.current.ScreenPointToRay(Input.mousePosition);
 		RaycastHit floorHit;
 
 		if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask)) {
