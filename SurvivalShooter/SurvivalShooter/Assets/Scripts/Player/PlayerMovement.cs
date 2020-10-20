@@ -10,6 +10,7 @@ public class PlayerMovement : NetworkBehaviour
 	private Rigidbody playerRigidbody;
 	private int floorMask;
 	private float camRayLength = 100f;
+	Camera newPlayerCamera;
 
 	void Awake()
 	{
@@ -22,7 +23,7 @@ public class PlayerMovement : NetworkBehaviour
     {
 		if (isLocalPlayer)
 		{
-			Camera newPlayerCamera = Instantiate<Camera>(spawnCamera);
+			newPlayerCamera = Instantiate<Camera>(spawnCamera);
 			newPlayerCamera.GetComponent<CameraFollow>().target = transform;
 		}
 	}
@@ -50,7 +51,7 @@ public class PlayerMovement : NetworkBehaviour
 
 	void Turning()
 	{
-		Ray camRay = Camera.current.ScreenPointToRay(Input.mousePosition);
+		Ray camRay = newPlayerCamera.ScreenPointToRay(Input.mousePosition);
 		RaycastHit floorHit;
 
 		if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask)) {

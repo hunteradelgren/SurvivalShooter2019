@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : NetworkBehaviour
 {
     public int startingHealth = 100;
+
+    [SyncVar]
     public int currentHealth;
+
     public float sinkSpeed = 2.5f;
     public int scoreValue = 10;
     public AudioClip deathClip;
@@ -45,7 +49,7 @@ public class EnemyHealth : MonoBehaviour
         enemyAudio.Play ();
 
         currentHealth -= amount;
-            
+
         hitParticles.transform.position = hitPoint;
         hitParticles.Play();
 
@@ -76,5 +80,14 @@ public class EnemyHealth : MonoBehaviour
         isSinking = true;
         ScoreManager.score += scoreValue;
         Destroy (gameObject, 2f);
+    }
+    [Command]
+    void CmdSetInitialHealth()
+    {
+        
+    }
+    void CmdSetHealth(int amount)
+    {
+        
     }
 }

@@ -5477,6 +5477,8 @@ MonoBehaviour:
   syncInterval: 0.1
   startingHealth: 100
   currentHealth: 100
+  HUDCanvas: {fileID: 3060637608314097164, guid: 1a6cfd4f98629124c8f6480a47eaa70e,
+    type: 3}
   healthSlider: {fileID: 0}
   damageImage: {fileID: 0}
   deathClip: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}

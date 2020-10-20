@@ -3,17 +3,20 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using Mirror;
-
+using System.Linq;
 
 public class PlayerHealth : NetworkBehaviour
 {
     public int startingHealth = 100;
 
+    PlayerHealth[] playerHealth;
+
     [SyncVar]
     public int currentHealth;
 
-    public Slider healthSlider;
-    public Image damageImage;
+    public GameObject HUDCanvas;
+    Slider healthSlider;
+    Image damageImage;
     public AudioClip deathClip;
     public float flashSpeed = 5f;
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f);
@@ -36,6 +39,16 @@ public class PlayerHealth : NetworkBehaviour
         currentHealth = startingHealth;
     }
 
+    private void Start()
+    {
+        if (isLocalPlayer)
+        {
+            GameObject newPlayerHUD = Instantiate<GameObject>(HUDCanvas);
+            healthSlider = newPlayerHUD.GetComponentInChildren<Slider>();
+            damageImage = newPlayerHUD.GetComponentInChildren<Image>();
+        }
+    }
+
 
     void Update ()
     {
@@ -45,7 +58,7 @@ public class PlayerHealth : NetworkBehaviour
         }
         else
         {
-            damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
+            damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
         }
         damaged = false;
     }
@@ -86,6 +99,27 @@ public class PlayerHealth : NetworkBehaviour
 
     public void RestartLevel ()
     {
-        SceneManager.LoadScene (0);
+        bool allDead = true;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        if (players.Length > 0)
+        {
+            playerHealth = new PlayerHealth[players.Length];
+            for (int i = 0; i < playerHealth.Length; i++)
+            {
+                playerHealth[i] = players[i].GetComponent<PlayerHealth>();
+                if (playerHealth[i].currentHealth > 0f)
+                {
+                    allDead = false;
+                }
+            }
+        }
+        else
+        {
+            allDead = false;
+        }
+        if (allDead)
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }
