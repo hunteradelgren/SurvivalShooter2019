@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Mirror;
 
-public class EnemyAttack : MonoBehaviour
+public class EnemyAttack : NetworkBehaviour
 {
     public float timeBetweenAttacks = 0.5f;
     public int attackDamage = 10;
 
 
     Animator anim;
-    GameObject player;
-    PlayerHealth playerHealth;
+    GameObject[] player;
+    PlayerHealth[] playerHealth;
+    GameObject activePlayer;
     EnemyHealth enemyHealth;
     bool playerInRange;
     float timer;
 
 
     void Awake ()
-    {
-        player = GameObject.FindGameObjectWithTag ("Player");
-        playerHealth = player.GetComponent <PlayerHealth> ();
+    { 
         enemyHealth = GetComponent<EnemyHealth>();
         anim = GetComponent <Animator> ();
     }
@@ -26,45 +26,56 @@ public class EnemyAttack : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        if(other.gameObject == player)
-        {
-            playerInRange = true;
-        }
+            if (other.gameObject == activePlayer)
+            {
+                playerInRange = true;
+            }
     }
 
 
     void OnTriggerExit (Collider other)
     {
-        if(other.gameObject == player)
-        {
-            playerInRange = false;
-        }
+            if (other.gameObject == activePlayer)
+            {
+                playerInRange = false;
+            }
     }
 
 
     void Update ()
     {
-        timer += Time.deltaTime;
-
-        if(timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
+        int count = 0;
+        player = GameObject.FindGameObjectsWithTag("Player");
+        playerHealth = new PlayerHealth[player.Length];
+        foreach (GameObject p in player)
         {
-            Attack ();
-        }
+            
+            playerHealth[count] = p.GetComponent<PlayerHealth>();
+            Debug.Log("Player " + count + " has " + playerHealth[count].currentHealth + " Health");
+            timer += Time.deltaTime;
+            activePlayer = p;
+            if (timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
+            {
+                
+                Attack(p.GetComponent<PlayerHealth>());
+            }
 
-        if(playerHealth.currentHealth <= 0)
-        {
-            anim.SetTrigger ("PlayerDead");
+            if (p.GetComponent<PlayerHealth>().currentHealth <= 0)
+            {
+                anim.SetTrigger("PlayerDead");
+            }
+            count++;
         }
     }
 
 
-    void Attack ()
+    void Attack (PlayerHealth h)
     {
         timer = 0f;
 
-        if(playerHealth.currentHealth > 0)
+        if(h.currentHealth > 0)
         {
-            playerHealth.TakeDamage (attackDamage);
+            h.TakeDamage (attackDamage);
         }
     }
 }

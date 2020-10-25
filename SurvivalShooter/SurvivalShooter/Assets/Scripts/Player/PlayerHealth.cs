@@ -11,11 +11,11 @@ public class PlayerHealth : NetworkBehaviour
 
     PlayerHealth[] playerHealth;
 
-    [SyncVar]
     public int currentHealth;
 
     public GameObject HUDCanvas;
     Slider healthSlider;
+    Image[] images;
     Image damageImage;
     public AudioClip deathClip;
     public float flashSpeed = 5f;
@@ -26,7 +26,7 @@ public class PlayerHealth : NetworkBehaviour
     AudioSource playerAudio;
     PlayerMovement playerMovement;
     PlayerShooting playerShooting;
-    bool isDead;
+    public bool isDead;
     bool damaged;
 
 
@@ -38,15 +38,18 @@ public class PlayerHealth : NetworkBehaviour
         playerShooting = GetComponentInChildren <PlayerShooting> ();
         currentHealth = startingHealth;
     }
-
     private void Start()
     {
-        if (isLocalPlayer)
-        {
             GameObject newPlayerHUD = Instantiate<GameObject>(HUDCanvas);
             healthSlider = newPlayerHUD.GetComponentInChildren<Slider>();
-            damageImage = newPlayerHUD.GetComponentInChildren<Image>();
-        }
+            images = newPlayerHUD.GetComponentsInChildren<Image>();
+            foreach(Image image in images)
+            {
+                if(image.name.Contains("DamageImage"))
+                {
+                    damageImage = image;
+                }
+            }
     }
 
 

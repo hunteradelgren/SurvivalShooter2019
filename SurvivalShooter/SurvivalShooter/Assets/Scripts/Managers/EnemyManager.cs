@@ -18,10 +18,8 @@ public class EnemyManager : NetworkBehaviour
     void Spawn ()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        Debug.Log("Number of Players: " + players.Length);
         if (players.Length > 0)
         {
-            Debug.Log("Spawning Enemy");
             playerHealth = new PlayerHealth[players.Length];
             for (int i = 0; i < playerHealth.Length; i++)
             {

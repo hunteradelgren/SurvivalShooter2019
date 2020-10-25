@@ -22,6 +22,7 @@ public class EnemyMovement : NetworkBehaviour
         SetClosestPlayer();
         if(enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0)
         {
+            nav.enabled = true;
             nav.SetDestination (Targetplayer.position);
         }
         else
@@ -33,12 +34,23 @@ public class EnemyMovement : NetworkBehaviour
     void SetClosestPlayer()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        Transform[] playerPos = new Transform[players.Length];
+        GameObject[] livingPlayers = new GameObject[players.Length];
+        
         int count = 0;
+        int living = 0;
         foreach (GameObject player in players)
         {
-            playerPos[count] = player.transform;
+            if (!players[count].GetComponent<PlayerHealth>().isDead)
+            {
+                livingPlayers[living] = player;
+                living++;
+            }
             count++;
+        }
+        Transform[] playerPos = new Transform[living];
+        for (int i = 0; i < living; i++)
+        {
+            playerPos[i] = livingPlayers[i].transform;
         }
         if(players.Length > 0)
         {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : NetworkBehaviour
 {
     public int damagePerShot = 20;
     public float timeBetweenBullets = 0.15f;
@@ -16,6 +17,7 @@ public class PlayerShooting : MonoBehaviour
     AudioSource gunAudio;
     Light gunLight;
     float effectsDisplayTime = 0.2f;
+    PlayerHealth isPlayer;
 
 
     void Awake ()
@@ -25,21 +27,25 @@ public class PlayerShooting : MonoBehaviour
         gunLine = GetComponent <LineRenderer> ();
         gunAudio = GetComponent<AudioSource> ();
         gunLight = GetComponent<Light> ();
+        isPlayer = GetComponentInParent<PlayerHealth>();
     }
 
 
     void Update ()
     {
-        timer += Time.deltaTime;
-
-		if(Input.GetButton ("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
+        if (isPlayer.isLocalPlayer)
         {
-            Shoot ();
-        }
+            timer += Time.deltaTime;
 
-        if(timer >= timeBetweenBullets * effectsDisplayTime)
-        {
-            DisableEffects ();
+            if (Input.GetButton("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
+            {
+                Shoot();
+            }
+
+            if (timer >= timeBetweenBullets * effectsDisplayTime)
+            {
+                DisableEffects();
+            }
         }
     }
 
@@ -49,7 +55,6 @@ public class PlayerShooting : MonoBehaviour
         gunLine.enabled = false;
         gunLight.enabled = false;
     }
-
 
     void Shoot ()
     {

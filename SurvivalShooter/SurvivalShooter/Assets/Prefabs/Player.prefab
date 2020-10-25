@@ -5173,6 +5173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c63be2a8918c741863160b9d9da122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   damagePerShot: 20
   timeBetweenBullets: 0.15
   range: 100
@@ -5479,11 +5481,10 @@ MonoBehaviour:
   currentHealth: 100
   HUDCanvas: {fileID: 3060637608314097164, guid: 1a6cfd4f98629124c8f6480a47eaa70e,
     type: 3}
-  healthSlider: {fileID: 0}
-  damageImage: {fileID: 0}
   deathClip: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
   flashSpeed: 5
   flashColour: {r: 1, g: 0, b: 0, a: 0.1}
+  isDead: 0
 --- !u!114 &574535524878383931
 MonoBehaviour:
   m_ObjectHideFlags: 0

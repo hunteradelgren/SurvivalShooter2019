@@ -40,7 +40,6 @@ public class EnemyHealth : NetworkBehaviour
         }
     }
 
-
     public void TakeDamage (int amount, Vector3 hitPoint)
     {
         if(isDead)
@@ -59,7 +58,6 @@ public class EnemyHealth : NetworkBehaviour
         }
     }
 
-
     void Death ()
     {
         isDead = true;
@@ -72,7 +70,6 @@ public class EnemyHealth : NetworkBehaviour
         enemyAudio.Play ();
     }
 
-
     public void StartSinking ()
     {
         GetComponent <UnityEngine.AI.NavMeshAgent> ().enabled = false;
@@ -80,14 +77,5 @@ public class EnemyHealth : NetworkBehaviour
         isSinking = true;
         ScoreManager.score += scoreValue;
         Destroy (gameObject, 2f);
-    }
-    [Command]
-    void CmdSetInitialHealth()
-    {
-        
-    }
-    void CmdSetHealth(int amount)
-    {
-        
     }
 }
